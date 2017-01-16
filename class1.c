@@ -1,38 +1,49 @@
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
+float positive(float check){
+
+	if (check>0.0)
+		return check;
+	else 
+		return (-check);
+}
+
+
 
 void main()
 {
 
 	int n,i,j;
-	double er,sum;
+	float er,sum;
 	printf("\n Enter the size of the matrix [n] :");
 	scanf("%d",&n);
 	printf("\n Enter the stopping criteria :");
-	scanf("%lf",&er);
-	double a[n][n];
+	scanf("%f",&er);
+	float a[n][n];
 	for (i=0;i<n;i++)
 	{
 		for(j=0;j<n;j++)
 		{	
 			printf("Enter value i= %d j=%d :",i,j);
-			scanf("%lf",&a[i][j]);
+			scanf("%f",&a[i][j]);
 		}
 	}
-	double b[n];
+	float b[n];
 	for (i=0;i<n;i++)
 	{
 		printf("Enter the value b %d :",i);
-		scanf("%lf",&b[i]);
+		scanf("%f",&b[i]);
 	}
-	double x0[n],x[n];
+	float x0[n],x[n];
 	for (i=0;i<n;i++)
 	{
 		x0[i]=0;
 		x[i]=0;
 	}
-	int key =0 ;
-	do{
+	int key =1 ;
+	while(key==1)
+	{
 	for (i=0 ;i<n;i++)
 	{
 		sum=b[i];
@@ -41,19 +52,36 @@ void main()
 		{
 			if (j!=i)
 			{
-				sum=sum-a[i][j]*x0[j];	
+				sum=sum-a[i][j]*x0[j];
+				printf("%lf",sum);	
 			}
 		}
 		x[i]=sum/a[i][i];
-		if(abs((x[i]-x0[i])/x[i])>er)
+		printf("x=%lf \n",x[i]);
+		printf("check=%lf \n",(x[i]-x0[i])/x[i]);
+		float check=(x[i]-x0[i])/x[i];
+		
+		if(positive(check)>er)
 		{
-			printf("iteration %d : ",i+1);			
+			// printf("iteration %d :\n ",i+1);
+			// for (i=0;i<n;i++)
+			// {
+			// 	printf("Value of x %d is : %lf",i+1,x[i]);
+			// 	}
+			printf("here inside if");			
 			key=1;
 			x0[i]=x[i];
 		}	
+		else 
+		{
+			key=0;
+		}
+		printf("key =%d\n",key);
+		getchar();
 
 	}
-	}while(key==0);
+	}
+	
 	for (i=0;i<n;i++)
 	{
 		printf("Value of x %d is : %lf",i+1,x[i]);
