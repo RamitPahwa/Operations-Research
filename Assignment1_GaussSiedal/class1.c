@@ -47,18 +47,20 @@ void main()
 	a=(double ** )malloc(n*sizeof(double * ));
 	for (j=0;j<n;j++)
 		a[j]=(double *)malloc(n*sizeof(double));
+	printf("Enter Value of Matrix A:\n");
 	for (i=0;i<n;i++)
 	{
 		for(j=0;j<n;j++)
 		{	
-			printf("Enter value i= %d j=%d :",i,j);
+			printf("Enter coeficient of variable x%d in equation %d :",j+1,i+1);
 			scanf("%lf",&a[i][j]);
 		}
 	}
 	float b[n];
+	printf("Enter Value of Matrix b:\n");
 	for (i=0;i<n;i++)
 	{
-		printf("Enter the value b %d :",i);
+		printf("Enter the value b %d :",i+1);
 		scanf("%f",&b[i]);
 	}
 	float x0[n],x[n];
@@ -70,7 +72,7 @@ void main()
 	int key =1 ;
 	if (!isDiagonallyDominant(a,n)){
 
-		printf("not Diagionally Dominant\n");
+		printf("not Diagionally Dominant(printing original guess)\n");
 		key=0;
 
 	}
@@ -102,12 +104,12 @@ void main()
 
 	}
 	}
+	printf("Solutions:\n");
+	printf("---------------------------------------------------------------\n");
 	for (i=0;i<n;i++)
 	{
 		printf("Value of x %d is : %lf \n",i+1,x[i]);
 	}
-	
-	
-	
-	
+	printf("---------------------------------------------------------------\n");
+
 }
