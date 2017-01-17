@@ -9,12 +9,38 @@ double positive(double check){
 		return (-check);
 }
 
-void solveGaussSiedal(int n,double *b,double **a,double er){
+int isDiagonallyDominant(double **a_sub,int n)
+{
+	int i,j;
+	int flag=1;
+	double sum=0;
+		for (i=0;i<n;i++)
+		{
+			for(j=0;j<n;j++)
+			{	
+
+				if(j!=i){
+				
+					sum=sum+positive(a_sub[i][j]);
+				}
+			}
+			if(positive(a_sub[i][i])<sum)
+			{	
+				flag=0;
+				return flag;
+			}
+
+		}
+	return flag;	
+}
+
+double *solveGaussSiedal(int n,double *b,double **a,double er){
 	
 	int i,j;
 	double sum=0;
 	double *x;
 	double *x0;
+	int iteration=0;
 	x=(double *)malloc(n*sizeof(double));
 	x0=(double *)malloc(n*sizeof(double));
 	for (i=0;i<n;i++)
@@ -25,8 +51,14 @@ void solveGaussSiedal(int n,double *b,double **a,double er){
 	}
 
 	int key =1 ;
+	if (!isDiagonallyDominant(a,n)){
+
+		printf("not Diagionally Dominant(printing intial guess)\n");
+		key=0;
+
+	}
 	while(key==1)
-	{
+	{iteration++;
 	for (i=0 ;i<n;i++)
 	{
 		sum=b[i];
@@ -49,16 +81,12 @@ void solveGaussSiedal(int n,double *b,double **a,double er){
 		else 
 		{
 			key=0;
+	
 		}
 
 	}
 	}
-	for (i=0;i<n;i++)
-	{
-		printf("Value of x %d is : %lf\n",i+1,x[i]);
-	}
-
-	return ;
+	return x ;
 
 }
 
@@ -79,6 +107,9 @@ void generateCombination(int arr[],int data[],double **a,int start,int end ,int 
 
 		int j=0,k=0;
 		
+		double *x,*solution_final;
+		x=(double *)malloc(m*sizeof(double));
+		solution_final=(double *)malloc(n*sizeof(double));
 
 		if (index==m){
 			double **a_sub;
@@ -89,13 +120,23 @@ void generateCombination(int arr[],int data[],double **a,int start,int end ,int 
 				for (k=0;k<m;k++){
 
 					a_sub[j][k]=a[j][data[k]];
-					// printf("%lf",a_sub[j][k]);
-
 				}
-				//printf("\n");
 			}
 
-			solveGaussSiedal(m,b,a_sub,er);
+			x=solveGaussSiedal(m,b,a_sub,er);
+			for(j=0;j<n;j++)
+			{
+				solution_final[j]=0.0;
+			}
+			for (k=0;k<m;k++)
+				{	
+					solution_final[data[k]]=x[k];
+				}
+				for (j=0;j<n;j++)
+				{
+				printf("Value of x %d is : %lf\n",j+1,solution_final[j]);
+			 	}
+			 printf("---------------------------\n");
 			return;
 
 		}
