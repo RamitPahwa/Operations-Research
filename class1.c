@@ -81,11 +81,12 @@ void main()
 
 	}
 	}
-	
 	for (i=0;i<n;i++)
 	{
 		printf("Value of x %d is : %lf",i+1,x[i]);
 	}
+	
+	
 	
 	
 }
