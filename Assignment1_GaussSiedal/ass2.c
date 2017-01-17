@@ -29,7 +29,6 @@ int isDiagonallyDominant(double **a_sub,int n)
 				flag=0;
 				return flag;
 			}
-
 		}
 	return flag;	
 }
