@@ -102,7 +102,7 @@ int fact(int no){
 
 }
 
-void generateCombination(int arr[],int data[],double **a,int start,int index,int m,int n,double * b,double er){
+void generateCombination(int data[],double **a,int start,int index,int m,int n,double * b,double er){
 
 		int j=0,k=0;
 		
@@ -144,8 +144,8 @@ void generateCombination(int arr[],int data[],double **a,int start,int index,int
 
 		for (int i=start; i<=n-1 && n-i >= m-index; i++)
     {
-        data[index] = arr[i];
-        generateCombination(arr, data,a, i+1, index+1, m,n,b,er);
+        data[index] = i;
+        generateCombination(data,a, i+1, index+1, m,n,b,er);
     }
 
 
@@ -185,10 +185,6 @@ void main(){
 		printf("Enter the value b %d :",i+1);
 		scanf("%lf",&b[i]);
 	}
-	for (i=0;i<n;i++)
-	{
-		arr[i]=i;
-	}
-	generateCombination(arr,data,a,0,0,m,n,b,er);
+	generateCombination(data,a,0,0,m,n,b,er);
 	
 }
