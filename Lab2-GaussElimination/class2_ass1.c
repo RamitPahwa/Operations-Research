@@ -94,7 +94,7 @@ void solveGaussElimination(double **a,int n,double *b,double *solution)
 	}	
 
 }
-void generateCombination(int data[],double **a,int start,int index,int m,int n,double * b,double *solution_main,int count){
+void generateCombination(int data[],double **a,int start,int index,int m,int n,double * b){
 
 		int i,j=0,k=0;
 		double *solution,*solution_final;
@@ -125,10 +125,11 @@ void generateCombination(int data[],double **a,int start,int index,int m,int n,d
 				{	
 					solution_final[data[k]]=solution[k];
 				}
-				for(k=0;k<m;k++)
-					{solution_main[k+m*count]=solution_final[k];
-					printf("%lf \n",solution_main[k+m*count]);}
-				count++;
+				for (j=0;j<n;j++)
+				{
+				printf("Value of x %d is : %lf\n",j+1,solution_final[j]);
+			 	}
+			 printf("---------------------------\n");
 			return;
 
 		}
@@ -138,7 +139,7 @@ void generateCombination(int data[],double **a,int start,int index,int m,int n,d
 		for (int i=start; i<=n-1 && n-i >= m-index; i++)
     {
         data[index] = i;
-        generateCombination(data,a, i+1, index+1, m,n,b,count);
+        generateCombination(data,a, i+1, index+1, m,n,b);
     }
 
 
@@ -183,9 +184,5 @@ void main(){
 		scanf("%lf",&b[i]);
 
 	}
-	int x= fact(n)/(fact(n)*fact(n-m));
-	double *solution_main
-		solution_main=(double *)malloc(n*x*sizeof(double));
-	generateCombination(data,a,0,0,m,n,b,solution_main,0);
-
+	generateCombination(data,a,0,0,m,n,b);
 }
