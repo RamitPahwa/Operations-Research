@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
+int count=0;
 void swap(double **a,int row1,int row2,int n)
 {
 
@@ -43,6 +44,19 @@ void check(double **a,int n,int i,int j)
 			}
 		}
 	}
+
+}
+int fact(int no){
+	if(no==0)
+		return 1;
+	if (no==1)
+		return 1;
+
+	else 
+	{
+		return (no*fact(no-1));
+	}
+
 
 }
 void solveGaussElimination(double **a,int n,double *b,double *solution)
@@ -94,19 +108,20 @@ void solveGaussElimination(double **a,int n,double *b,double *solution)
 	}	
 
 }
-void generateCombination(int data[],double **a,int start,int index,int m,int n,double * b){
+void generateCombination(int data[],double **a,int start,int index,int m,int n,double * b,double **solution_main){
 
 		int i,j=0,k=0;
-		double *solution,*solution_final;
-		solution=(double *)malloc(m*sizeof(double));
-		solution_final=(double *)malloc(n*sizeof(double));
-		for (i=0;i<n;i++)
-		{
-			solution[i]=0.0;
-		}
+		
 		if (index==m){
 			double **a_sub;
 			a_sub=(double ** )malloc(m*sizeof(double * ));
+			double *solution,*solution_final;
+			solution=(double *)malloc(m*sizeof(double));
+			solution_final=(double *)malloc(n*sizeof(double));
+			for (i=0;i<n;i++)
+			{
+				solution[i]=0.0;
+			}
 			for (j=0;j<m;j++)
 				{a_sub[j]=(double *)malloc(m*sizeof(double));}
 			for (j=0;j<m;j++){
@@ -125,11 +140,11 @@ void generateCombination(int data[],double **a,int start,int index,int m,int n,d
 				{	
 					solution_final[data[k]]=solution[k];
 				}
-				for (j=0;j<n;j++)
-				{
-				printf("Value of x %d is : %lf\n",j+1,solution_final[j]);
-			 	}
-			 printf("---------------------------\n");
+			 for (j=0;j<n;j++)
+			 {
+			 	solution_main[count][j]=solution_final[j];
+			 }
+			 count++;
 			return;
 
 		}
@@ -139,7 +154,7 @@ void generateCombination(int data[],double **a,int start,int index,int m,int n,d
 		for (int i=start; i<=n-1 && n-i >= m-index; i++)
     {
         data[index] = i;
-        generateCombination(data,a, i+1, index+1, m,n,b);
+        generateCombination(data,a, i+1, index+1, m,n,b,solution_main);
     }
 
 
@@ -184,5 +199,159 @@ void main(){
 		scanf("%lf",&b[i]);
 
 	}
-	generateCombination(data,a,0,0,m,n,b);
+	int total_solution=fact(n)/(fact(m)*fact(n-m));
+	double **solution_main;
+	solution_main=(double ** )malloc(total_solution*sizeof(double * ));
+	for (j=0;j<total_solution;j++)
+		solution_main[j]=(double *)malloc((n)*sizeof(double));
+	generateCombination(data,a,0,0,m,n,b,solution_main);
+
+	for (i=0;i<total_solution;i++)
+		{for(j=0;j<n;j++)
+			{
+
+				printf("%0.3lf   ",solution_main[i][j]);
+			}
+			printf("\n");
+		}
+	int ans=1;
+	int choice;
+	int flag;
+	int counter=0;
+	while(ans==1)
+	{	
+		printf("\n\n                                Menu          \n\n");
+		printf("===============================================================================\n");
+		printf("1.Basic Feasivle Solution\n");
+		printf("2.Degenerate Basic Solution\n");
+		printf("3.Non-Degenerate Basic Solution\n");
+		printf("4.Extreme Points\n");
+		printf("5.Exit\n");
+		printf("Enter your choice:");
+		scanf("%d",&choice);
+		switch(choice)
+		{
+			case 1:	
+					for(i=0;i<total_solution;i++)
+					{
+						for(j=0;j<n;j++)
+						{
+							if(solution_main[i][j]<0.0)
+							{
+								flag=0;
+								break;
+							}
+							else 
+								flag=1;
+						}
+
+						if(flag!=0)
+						{	
+							printf("Basic Feasible Soltion is :\n");
+							for (j=0;j<n;j++)
+							{
+								printf("Value of x %d is : %lf\n",j+1,solution_main[i][j]);
+			 				}
+			 				printf("---------------------------\n");
+						}
+						else if(i==total_solution-1)
+							printf("No Basic feasible  Solution\n");
+
+					}
+					break;
+			case 2:for(i=0;i<total_solution;i++)
+					{	counter=0;
+						for(j=0;j<n;j++)
+						{
+							if(solution_main[i][j]<0.0)
+							{
+								flag=0;
+								break;
+							}
+							else if(solution_main[i][j]==0.0)
+								{counter++; 
+								flag=1;}
+							else
+								flag=1;
+						}
+
+						if(flag!=0&& counter>m)
+						{	
+							printf("Non Degenerate Basic Feasible Soltion is :\n");
+							for (j=0;j<n;j++)
+							{
+								printf("Value of x %d is : %lf\n",j+1,solution_main[i][j]);
+			 				}
+			 				printf("---------------------------\n");
+						}
+						else if(i==total_solution-1)
+							printf("No Degenerate Solution\n");
+
+					}
+					break;
+			case 3:	
+					for(i=0;i<total_solution;i++)
+					{	counter=0;
+						for(j=0;j<n;j++)
+						{
+							if(solution_main[i][j]<0.0)
+							{
+								flag=0;
+								break;
+							}
+							else if(solution_main[i][j]==0.0)
+								{counter++; 
+								flag=1;}
+							else
+								flag=1;
+						}
+
+						if(flag!=0&& counter==m)
+						{	
+							printf("Non Degenerate Basic Feasible Soltion is :\n");
+							for (j=0;j<n;j++)
+							{
+								printf("Value of x %d is : %lf\n",j+1,solution_main[i][j]);
+			 				}
+			 				printf("---------------------------\n");
+						}
+						else if(i==total_solution-1)
+							printf("No Non-Degenerate Solution\n");
+
+
+					}
+					break;
+			case 4:
+					for(i=0;i<total_solution;i++)
+					{
+						for(j=0;j<n;j++)
+						{
+							if(solution_main[i][j]<0.0)
+							{
+								flag=0;
+								break;
+							}
+							else 
+								flag=1;
+						}
+
+						if(flag!=0)
+						{	
+							printf("Extreme Point is :\n");
+							for (j=0;j<n;j++)
+							{
+								printf("Value of x %d is : %lf\n",j+1,solution_main[i][j]);
+			 				}
+			 				printf("---------------------------\n");
+						}
+						else if(i==total_solution-1)
+							printf("No Extreme Point\n");
+
+					}
+					break;
+			case 5:exit(0);break;
+		}
+		printf("Do you wish to continue [0 for no ][1 for] :\n");
+		scanf("%d",&ans);
+	}
 }
