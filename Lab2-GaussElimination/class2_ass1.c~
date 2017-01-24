@@ -287,7 +287,7 @@ void main(){
 			 				printf("---------------------------\n");
 						}
 						else if(endflag==0 && i==total_solution-1)
-							printf("\n\n ANS:Not Degenerate Solution\n\n");
+							printf("\n\n ANS:No Degenerate Solution\n\n");
 
 					}
 					break;
@@ -318,7 +318,7 @@ void main(){
 			 				printf("---------------------------\n");
 						}
 						else if(endflag==0 && i==total_solution-1)
-							printf("\n\n ANS: Not Non-Degenerate Solution\n\n");
+							printf("\n\n ANS: No Non-Degenerate Solution\n\n");
 
 
 					}
@@ -347,7 +347,7 @@ void main(){
 			 				printf("---------------------------\n");
 						}
 						else if(endflag==0 && i==total_solution-1)
-							printf("\n\n ANS: Not Extreme Point\n\n");
+							printf("\n\n ANS: No Extreme Point\n\n");
 
 					}
 					break;
