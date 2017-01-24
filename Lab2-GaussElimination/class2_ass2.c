@@ -160,14 +160,41 @@ void generateCombination(int data[],double **a,int start,int index,int m,int n,d
 
 
 }
+int max(double *extremeValue,int size)
+{
+	double max=extremeValue[0];
+	int max_index=0;
+	int i;
+	for (i=0;i<size;i++)
+	{
+		if(extremeValue[i]>=max)
+			{
+				max=extremeValue[i];
+				max_index=i;
+			}
+	}
+	return max_index+1;
+	}
 void main(){
 
-	int n,m,i,j,k;
+	int n,m,i,j,k=0;
 	double er,sum=0.0;
-	printf("\n Enter the number of variables [n] :");
+	double *z;
+
+	printf("Enter the coefficient of fuction to be optimized\n");
+
+	printf("\n Enter the number of variables in condition [n] :");
 	scanf("%d",&n);
-	printf("\n Enter the number of equation [m] :");
+	printf("\n Enter the number of equation in condition [m] :");
 	scanf("%d",&m);
+	z=(double *)malloc(n*sizeof(double));
+	printf("Enter the coefficient of fuction to be optimized\n");
+	for(i=0;i<n;i++)
+	{
+		printf("Value of coefficient of x%d :",i+1);
+		scanf("%lf",&z[i]);
+	}
+	
 	if (m==0)
 	{
 		printf("No Solution");
@@ -200,10 +227,20 @@ void main(){
 
 	}
 	int total_solution=fact(n)/(fact(m)*fact(n-m));
+	//Solution main containing all feasible solution
 	double **solution_main;
 	solution_main=(double ** )malloc(total_solution*sizeof(double * ));
 	for (j=0;j<total_solution;j++)
 		solution_main[j]=(double *)malloc((n)*sizeof(double));
+	//extreme points are basic feasible solution
+	double **extremepoints;
+	extremepoints=(double ** )malloc(total_solution*sizeof(double * ));
+	for (j=0;j<total_solution;j++)
+		extremepoints[j]=(double *)malloc((n)*sizeof(double));
+	//extremeValue will contain values at extreme points
+	double *extremeValue;
+	extremeValue=(double *)malloc(total_solution*sizeof(double));
+
 	generateCombination(data,a,0,0,m,n,b,solution_main);
 	printf("Feasible Solution Are as Follows:\n");
 	for (i=0;i<total_solution;i++)
@@ -215,144 +252,54 @@ void main(){
 			}
 			printf("\n");
 		}
-	int ans=1;
-	int choice;
-	int flag;
-	int counter=0;
-	while(ans==1)
-	{	
-		printf("\n\n                                Menu          \n\n");
-		printf("===============================================================================\n");
-		printf("1.Basic Feasible  Solution\n");
-		printf("2.Degenerate Basic Solution\n");
-		printf("3.Non-Degenerate Basic Solution\n");
-		printf("4.Extreme Points\n");
-		printf("5.Exit\n");
-		printf("Enter your choice:");
-		scanf("%d",&choice);
-		switch(choice)
+		int flag;
+	for(i=0;i<total_solution;i++)
 		{
-			case 1:	
-					for(i=0;i<total_solution;i++)
+			for(j=0;j<n;j++)
+			{
+				if(solution_main[i][j]<0.0)
 					{
-						for(j=0;j<n;j++)
-						{
-							if(solution_main[i][j]<0.0)
-							{
-								flag=0;
-								break;
-							}
-							else 
-								flag=1;
-						}
-
-						if(flag!=0)
-						{	
-							printf("Basic Feasible Solution is :\n");
-							for (j=0;j<n;j++)
-							{
-								printf("Value of x %d is : %lf\n",j+1,solution_main[i][j]);
-			 				}
-			 				printf("---------------------------\n");
-						}
-						else if(flag==0 && i==total_solution-1)
-							printf("\n\n ANS: No Basic feasible  Solution\n\n");
-
+						flag=0;
+						break;
 					}
-					break;
-			case 2:for(i=0;i<total_solution;i++)
-					{	counter=0;
-						for(j=0;j<n;j++)
-						{
-							if(solution_main[i][j]<0.0)
-							{
-								flag=0;
-								break;
-							}
-							else if(solution_main[i][j]==0.0)
-								{counter++; 
-								flag=1;}
-							else
-								flag=1;
-						}
+				else 
+					flag=1;
+			}
 
-						if(flag!=0&& counter>(n-m))
-						{	
-							printf("Degenerate Basic Feasible Solution is :\n");
-							for (j=0;j<n;j++)
+			if(flag!=0)
+			{	
+			 				for (j=0;j<n;j++)
 							{
-								printf("Value of x %d is : %lf\n",j+1,solution_main[i][j]);
+								extremepoints[k][j]=solution_main[i][j];
 			 				}
-			 				printf("---------------------------\n");
-						}
-						else if(i==total_solution-1)
-							printf("\n\n ANS:Not Degenerate Solution\n\n");
-
-					}
-					break;
-			case 3:	
-					for(i=0;i<total_solution;i++)
-					{	counter=0;
-						for(j=0;j<n;j++)
-						{
-							if(solution_main[i][j]<0.0)
-							{
-								flag=0;
-								break;
-							}
-							else if(solution_main[i][j]==0.0)
-								{counter++; 
-								flag=1;}
-							else
-								flag=1;
-						}
-
-						if(flag!=0&& counter==(n-m))
-						{	
-							printf("Non Degenerate Basic Feasible Solution is :\n");
-							for (j=0;j<n;j++)
-							{
-								printf("Value of x %d is : %lf\n",j+1,solution_main[i][j]);
-			 				}
-			 				printf("---------------------------\n");
-						}
-						else if(i==total_solution-1)
-							printf("\n\n ANS: Not Non-Degenerate Solution\n\n");
-
-
-					}
-					break;
-			case 4:
-					for(i=0;i<total_solution;i++)
-					{
-						for(j=0;j<n;j++)
-						{
-							if(solution_main[i][j]<0.0)
-							{
-								flag=0;
-								break;
-							}
-							else 
-								flag=1;
-						}
-
-						if(flag!=0)
-						{	
-							printf("Extreme Point is :\n");
-							for (j=0;j<n;j++)
-							{
-								printf("Value of x %d is : %lf\n",j+1,solution_main[i][j]);
-			 				}
-			 				printf("---------------------------\n");
-						}
-						else if(i==total_solution-1)
-							printf("\n\n ANS: Not Extreme Point\n\n");
-
-					}
-					break;
-			case 5:exit(0);break;
+			 				k++;
+			}
+			
 		}
-		printf("Do you wish to continue [0 for no ][1 for] :\n");
-		scanf("%d",&ans);
-	}
+						printf("Extreme Point is :\n");
+						for(i=0;i<k;i++){
+							for (j=0;j<n;j++)
+							{
+								printf("Value of x %d is : %lf\n",j+1,extremepoints[i][j]);
+			 				}
+			 				printf("---------------------------\n");
+							}
+						for(i=0;i<k;i++){
+							for (j=0;j<n;j++)
+							{	
+								sum=sum+z[j]*extremepoints[i][j];
+								
+			 				}
+			 				extremeValue[i]=sum;
+			 				sum=0.0;
+							}
+
+			int maxindex=max(extremeValue,k);
+			printf("Maximum value is %lf",extremeValue[maxindex]);
+			printf("Solution is obtained at :\n");
+			for (j=0;j<n;j++)
+							{
+								printf("\nValue of x %d is : %lf\n",j+1,extremepoints[maxindex][j]);
+			 				}
+
 }
