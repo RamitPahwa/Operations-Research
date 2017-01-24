@@ -187,7 +187,7 @@ void main(){
 	{
 		for(j=0;j<n;j++)
 		{	
-			printf("Enter coeficient of variable x%d in equation %d :",j+1,i+1);
+			printf("Enter coefficient of variable x%d in equation %d :",j+1,i+1);
 			scanf("%lf",&a[i][j]);
 		}
 	}
@@ -205,12 +205,13 @@ void main(){
 	for (j=0;j<total_solution;j++)
 		solution_main[j]=(double *)malloc((n)*sizeof(double));
 	generateCombination(data,a,0,0,m,n,b,solution_main);
-
+	printf("Feasible Solution Are as Follows:\n");
 	for (i=0;i<total_solution;i++)
-		{for(j=0;j<n;j++)
+		{	printf("%d. ",i+1);
+			for(j=0;j<n;j++)
 			{
 
-				printf("%0.3lf   ",solution_main[i][j]);
+				printf("x%d= %0.3lf     ",j+1,solution_main[i][j]);
 			}
 			printf("\n");
 		}
@@ -222,7 +223,7 @@ void main(){
 	{	
 		printf("\n\n                                Menu          \n\n");
 		printf("===============================================================================\n");
-		printf("1.Basic Feasivle Solution\n");
+		printf("1.Basic Feasible  Solution\n");
 		printf("2.Degenerate Basic Solution\n");
 		printf("3.Non-Degenerate Basic Solution\n");
 		printf("4.Extreme Points\n");
@@ -247,15 +248,15 @@ void main(){
 
 						if(flag!=0)
 						{	
-							printf("Basic Feasible Soltion is :\n");
+							printf("Basic Feasible Solution is :\n");
 							for (j=0;j<n;j++)
 							{
 								printf("Value of x %d is : %lf\n",j+1,solution_main[i][j]);
 			 				}
 			 				printf("---------------------------\n");
 						}
-						else if(i==total_solution-1)
-							printf("No Basic feasible  Solution\n");
+						else if(flag==0 && i==total_solution-1)
+							printf("\n\n ANS: No Basic feasible  Solution\n\n");
 
 					}
 					break;
@@ -275,9 +276,9 @@ void main(){
 								flag=1;
 						}
 
-						if(flag!=0&& counter>m)
+						if(flag!=0&& counter>(n-m))
 						{	
-							printf("Non Degenerate Basic Feasible Soltion is :\n");
+							printf("Degenerate Basic Feasible Solution is :\n");
 							for (j=0;j<n;j++)
 							{
 								printf("Value of x %d is : %lf\n",j+1,solution_main[i][j]);
@@ -285,7 +286,7 @@ void main(){
 			 				printf("---------------------------\n");
 						}
 						else if(i==total_solution-1)
-							printf("No Degenerate Solution\n");
+							printf("\n\n ANS:Not Degenerate Solution\n\n");
 
 					}
 					break;
@@ -306,9 +307,9 @@ void main(){
 								flag=1;
 						}
 
-						if(flag!=0&& counter==m)
+						if(flag!=0&& counter==(n-m))
 						{	
-							printf("Non Degenerate Basic Feasible Soltion is :\n");
+							printf("Non Degenerate Basic Feasible Solution is :\n");
 							for (j=0;j<n;j++)
 							{
 								printf("Value of x %d is : %lf\n",j+1,solution_main[i][j]);
@@ -316,7 +317,7 @@ void main(){
 			 				printf("---------------------------\n");
 						}
 						else if(i==total_solution-1)
-							printf("No Non-Degenerate Solution\n");
+							printf("\n\n ANS: Not Non-Degenerate Solution\n\n");
 
 
 					}
@@ -345,7 +346,7 @@ void main(){
 			 				printf("---------------------------\n");
 						}
 						else if(i==total_solution-1)
-							printf("No Extreme Point\n");
+							printf("\n\n ANS: Not Extreme Point\n\n");
 
 					}
 					break;
