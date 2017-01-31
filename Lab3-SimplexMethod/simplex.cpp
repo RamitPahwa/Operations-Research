@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -81,11 +82,11 @@ int getPivotRow(int pivotCol){
 void makeNewTableau(){
 
   cout << "======================================================" <<endl;
-  cout << "Table " <<::table_no++ << endl << endl;
+  cout << "\t\t Table " <<::table_no++ << endl << endl;
   for(int i = 0 ; i <=eqn ; i++){
     for(int j = 0 ; j <= var; j++){
         mat[i][j] = temp[i][j];
-        cout << mat[i][j] << "\t";
+        cout << setw(10)<<setprecision(4)<<mat[i][j] << "\t";
     }     
     cout << endl;
   }
@@ -95,10 +96,10 @@ void makeNewTableau(){
 
 void find_optimum(){  
   cout << "======================================================" <<endl;
-  cout << " Initial Simplex Table " << endl << endl;
+  cout << " \t  Initial Simplex Table " << endl << endl;
      for(int i = 0 ; i <= eqn ; i++){
           for(int j = 0 ; j <= var; j++){
-               cout << mat[i][j] << "\t";
+               cout << setw(10)<<setprecision(4)<< mat[i][j] << "\t";
            }
            cout << endl; 
      }          
