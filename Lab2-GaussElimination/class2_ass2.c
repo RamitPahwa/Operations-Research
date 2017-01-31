@@ -187,7 +187,7 @@ void main(){
 	scanf("%d",&n);
 	printf("\n Enter the number of equation in condition [m] :");
 	scanf("%d",&m);
-	z=(double *)malloc(n*sizeof(double));
+	z=(double *)malloc((n+m)*sizeof(double));
 	printf("Enter the coefficient of fuction to be optimized\n");
 	for(i=0;i<n;i++)
 	{
@@ -207,7 +207,7 @@ void main(){
 	
 	a=(double ** )malloc(m*sizeof(double * ));
 	for (j=0;j<m;j++)
-		a[j]=(double *)malloc((n+1)*sizeof(double));
+		a[j]=(double *)malloc((n+m+1)*sizeof(double));
 
 	printf("Enter Value of Matrix A:\n");
 	for (i=0;i<m;i++)
@@ -218,6 +218,18 @@ void main(){
 			scanf("%lf",&a[i][j]);
 		}
 	}
+	for (i=n;i<(n+m);i++){
+
+		for(j=0;j<m;j++){
+
+			if((i-n)==j)
+				a[j][i]=1.0;
+			else
+				a[j][i]=0.0;
+
+		}
+
+	}
 	b=(double *)malloc(m*sizeof(double));
 	printf("Enter Value of Matrix b:\n");
 	for (i=0;i<m;i++)
@@ -226,26 +238,26 @@ void main(){
 		scanf("%lf",&b[i]);
 
 	}
-	int total_solution=fact(n)/(fact(m)*fact(n-m));
+	int total_solution=fact(n+m)/(fact(m)*fact(n));
 	//Solution main containing all feasible solution
 	double **solution_main;
 	solution_main=(double ** )malloc(total_solution*sizeof(double * ));
 	for (j=0;j<total_solution;j++)
-		solution_main[j]=(double *)malloc((n)*sizeof(double));
+		solution_main[j]=(double *)malloc((n+m)*sizeof(double));
 	//extreme points are basic feasible solution
 	double **extremepoints;
 	extremepoints=(double ** )malloc(total_solution*sizeof(double * ));
 	for (j=0;j<total_solution;j++)
-		extremepoints[j]=(double *)malloc((n)*sizeof(double));
+		extremepoints[j]=(double *)malloc((n+m)*sizeof(double));
 	//extremeValue will contain values at extreme points
 	double *extremeValue;
 	extremeValue=(double *)malloc(total_solution*sizeof(double));
 
-	generateCombination(data,a,0,0,m,n,b,solution_main);
+	generateCombination(data,a,0,0,m,n+m,b,solution_main);
 	printf("Feasible Solution Are as Follows:\n");
 	for (i=0;i<total_solution;i++)
 		{	printf("%d. ",i+1);
-			for(j=0;j<n;j++)
+			for(j=0;j<n+m;j++)
 			{
 
 				printf("x%d= %0.3lf     ",j+1,solution_main[i][j]);
@@ -255,7 +267,7 @@ void main(){
 		int flag;
 	for(i=0;i<total_solution;i++)
 		{
-			for(j=0;j<n;j++)
+			for(j=0;j<n+m;j++)
 			{
 				if(solution_main[i][j]<0.0)
 					{
@@ -268,7 +280,7 @@ void main(){
 
 			if(flag!=0)
 			{	
-			 				for (j=0;j<n;j++)
+			 				for (j=0;j<n+m;j++)
 							{
 								extremepoints[k][j]=solution_main[i][j];
 			 				}
@@ -278,14 +290,14 @@ void main(){
 		}
 						printf("Extreme Point is :\n");
 						for(i=0;i<k;i++){
-							for (j=0;j<n;j++)
+							for (j=0;j<n+m;j++)
 							{
 								printf("Value of x %d is : %lf\n",j+1,extremepoints[i][j]);
 			 				}
 			 				printf("---------------------------\n");
 							}
 						for(i=0;i<k;i++){
-							for (j=0;j<n;j++)
+							for (j=0;j<n+m;j++)
 							{	
 								sum=sum+z[j]*extremepoints[i][j];
 								
@@ -295,11 +307,11 @@ void main(){
 							}
 
 			int maxindex=max(extremeValue,k);
-			printf("Maximum value is %lf",extremeValue[maxindex]);
-			printf("Solution is obtained at :\n");
-			for (j=0;j<n;j++)
+			printf("Maximum value of Objective Function is is %lf",extremeValue[maxindex]);
+			printf("\n\n Solution is obtained at :\n");
+			for (j=0;j<n+m;j++)
 							{
-								printf("\nValue of x %d is : %lf\n",j+1,extremepoints[maxindex][j]);
+								printf("\nValue of x %d is : %lf",j+1,extremepoints[maxindex][j]);
 			 				}
-
+			printf("\n");
 }
