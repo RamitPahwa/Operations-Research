@@ -15,7 +15,6 @@ int countVal=0,countVal1=0, slackVar = 0;
 bool unbounded = false;
 bool infinite = false;
 int table_no = 1;
-int max_or_min;
 
 void parse(){
     string inequality;  
@@ -24,9 +23,6 @@ void parse(){
     
     printf("Enter number of equations\n");
     scanf("%d",&eqn);
-
-    printf("Enter 1 for Maximization problem and 0 for for Minimization problem");
-    scanf("%d",&max_or_min)	
 
     for(i = 0 ; i < eqn ; i++)
     {
