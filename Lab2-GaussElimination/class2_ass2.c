@@ -180,9 +180,6 @@ void main(){
 	int n,m,i,j,k=0;
 	double er,sum=0.0;
 	double *z;
-
-	printf("Enter the coefficient of fuction to be optimized\n");
-
 	printf("\n Enter the number of variables in condition [n] :");
 	scanf("%d",&n);
 	printf("\n Enter the number of equation in condition [m] :");
