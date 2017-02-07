@@ -25,8 +25,8 @@ void parse(){
     printf("Enter number of equations\n");
     scanf("%d",&eqn);
 
-    printf("Enter 1 for Maximization problem and 0 for for Minimization problem");
-    scanf("%d",&max_or_min)	
+    printf("Enter 1 for Maximization problem and -1 for for Minimization problem\n");
+    scanf("%d",&max_or_min);	
 
     for(i = 0 ; i < eqn ; i++)
     {
@@ -47,7 +47,7 @@ void parse(){
     for(int j = 0; j <= var ; j++){
           scanf("%f", &mat[eqn][j]);
           if(j != var)
-               mat[eqn][j] = (-1)*mat[eqn][j];
+               mat[eqn][j] = (-1)*max_or_min*mat[eqn][j];
     }
 }
 
@@ -142,8 +142,10 @@ int main(){
         printf("There are infinitely many solutions\n");          
     else if(unbounded)
         printf("The problem is unbounded\n");
-    else          
-        printf("The Maximum value of Z is %f \n", mat[eqn][var]); 
+    else if (max_or_min==1)         
+        printf("The Maximum value of Z is %f \n", mat[eqn][var]);
+    else if(max_or_min==-1)
+         printf("The Minimum value of Z is %f \n", -mat[eqn][var]);
 
     cout <<"======================================================" <<endl; 
     return 0;
