@@ -26,7 +26,7 @@ void parse(){
     scanf("%d",&eqn);
 
     printf("Enter 1 for Maximization problem and 0 for for Minimization problem");
-    scanf("%d",&max_or_min)	
+    scanf("%d",&max_or_min);	
 
     for(i = 0 ; i < eqn ; i++)
     {
