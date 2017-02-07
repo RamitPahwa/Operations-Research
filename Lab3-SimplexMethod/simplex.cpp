@@ -16,6 +16,7 @@ bool unbounded = false;
 bool infinite = false;
 int table_no = 1;
 int max_or_min;
+int solution_index[15];
 
 void parse(){
     string inequality;  
@@ -24,6 +25,11 @@ void parse(){
     
     printf("Enter number of equations\n");
     scanf("%d",&eqn);
+
+    for (i=0;i<eqn;i++)
+    {
+      solution_index[i]=eqn+i+1;
+    }
 
     printf("Enter 1 for Maximization problem and -1 for for Minimization problem\n");
     scanf("%d",&max_or_min);	
@@ -97,6 +103,12 @@ void makeNewTableau(){
   cout << "======================================================" <<endl;   
 }
 
+void replaceSolution(int pivotCol,int pivotRow)
+{
+  solution_index[pivotRow]=pivotCol+1;
+
+}
+
 
 void find_optimum(){  
   cout << "======================================================" <<endl;
@@ -116,6 +128,7 @@ void find_optimum(){
                unbounded = true;
                return;
           }
+          replaceSolution(pivotCol,pivotRow);
           for(int i = 0 ; i <= eqn ; i++){
                for(int j = 0 ; j <= var; j++){
                     if(i == pivotRow && j == pivotCol)
@@ -143,9 +156,16 @@ int main(){
     else if(unbounded)
         printf("The problem is unbounded\n");
     else if (max_or_min==1)         
-        printf("The Maximum value of Z is %f \n", mat[eqn][var]);
+        {
+          printf("The Maximum value of Z is %f \n", mat[eqn][var]);
+          for (i=0;i<eqn;i++)
+          {
+            std::cout<<"Valur of x"<<solution_index[i]<<" is:  "<<mat[i][var]<<endl;
+          }
+        }
     else if(max_or_min==-1)
          printf("The Minimum value of Z is %f \n", -mat[eqn][var]);
+
 
     cout <<"======================================================" <<endl; 
     return 0;
