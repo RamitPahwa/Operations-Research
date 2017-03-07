@@ -157,19 +157,14 @@ int main(){
     else if (max_or_min==1)         
         {
           printf("The Maximum value of Z is %f \n", mat[eqn][var]);
-          for (i=0;i<eqn;i++)
-          {
-            std::cout<<"Valur of x"<<solution_index[i]<<" is:  "<<mat[i][var]<<endl;
-          }
+          // for (i=0;i<eqn;i++)
+          // {
+          //   std::cout<<"Valur of x"<<solution_index[i]<<" is:  "<<mat[i][var]<<endl;
+          // }
         }
     else if(max_or_min==-1)
-         {
-          printf("The Minimum value of Z is %f \n", -mat[eqn][var]);
-          for (i=0;i<eqn;i++)
-          {
-            std::cout<<"Valur of x"<<solution_index[i]<<" is:  "<<mat[i][var]<<endl;
-          }
-        }
+         printf("The Minimum value of Z is %f \n", -mat[eqn][var]);
+
 
     cout <<"======================================================" <<endl; 
     return 0;
