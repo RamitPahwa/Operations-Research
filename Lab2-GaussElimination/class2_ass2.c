@@ -3,11 +3,11 @@
 #include <math.h>
 
 int count=0;
-void swap(double **a,int row1,int row2,int n)
+void swap(float **a,int row1,int row2,int n)
 {
 
 	int i;
-	double temp;
+	float temp;
 	for(i=0;i<n;i++)
 	{
 		temp=a[row1][i];
@@ -16,7 +16,7 @@ void swap(double **a,int row1,int row2,int n)
 	}
 }
 
-void printMatrix(double **a,int n)
+void printMatrix(float **a,int n)
 {
 		int i,j;
 	for(i=0;i<n;i++){
@@ -29,7 +29,7 @@ void printMatrix(double **a,int n)
 			printf("\n");
 		}
 }
-void check(double **a,int n,int i,int j)
+void check(float **a,int n,int i,int j)
 {
 
 	int k;
@@ -59,11 +59,11 @@ int fact(int no){
 
 
 }
-void solveGaussElimination(double **a,int n,double *b,double *solution)
+void solveGaussElimination(float **a,int n,float *b,float *solution)
 {	
 
 	int i,j,k;
-	double sum=0.0;
+	float sum=0.0;
 	for(i=0;i<n;i++)
 	{
 		a[i][n]=b[i];
@@ -85,7 +85,7 @@ void solveGaussElimination(double **a,int n,double *b,double *solution)
 	{
 			for(j=i+1;j<n;j++)
 			{
-				double ratio=(a[j][i]/a[i][i]);
+				float ratio=(a[j][i]/a[i][i]);
 				for (k=0;k<(n+1);k++)
 				{
 				a[j][k]=a[j][k]-ratio*a[i][k];
@@ -108,22 +108,22 @@ void solveGaussElimination(double **a,int n,double *b,double *solution)
 	}	
 
 }
-void generateCombination(int data[],double **a,int start,int index,int m,int n,double * b,double **solution_main){
+void generateCombination(int data[],float **a,int start,int index,int m,int n,float * b,float **solution_main){
 
 		int i,j=0,k=0;
 		
 		if (index==m){
-			double **a_sub;
-			a_sub=(double ** )malloc(m*sizeof(double * ));
-			double *solution,*solution_final;
-			solution=(double *)malloc(m*sizeof(double));
-			solution_final=(double *)malloc(n*sizeof(double));
+			float **a_sub;
+			a_sub=(float ** )malloc(m*sizeof(float * ));
+			float *solution,*solution_final;
+			solution=(float *)malloc(m*sizeof(float));
+			solution_final=(float *)malloc(n*sizeof(float));
 			for (i=0;i<n;i++)
 			{
 				solution[i]=0.0;
 			}
 			for (j=0;j<m;j++)
-				{a_sub[j]=(double *)malloc(m*sizeof(double));}
+				{a_sub[j]=(float *)malloc(m*sizeof(float));}
 			for (j=0;j<m;j++){
 				for (k=0;k<m;k++){
 
@@ -160,9 +160,9 @@ void generateCombination(int data[],double **a,int start,int index,int m,int n,d
 
 
 }
-int max(double *extremeValue,int size)
+int max(float *extremeValue,int size)
 {
-	double max=extremeValue[0];
+	float max=extremeValue[0];
 	int max_index=0;
 	int i;
 	for (i=0;i<size;i++)
@@ -178,18 +178,18 @@ int max(double *extremeValue,int size)
 void main(){
 
 	int n,m,i,j,k=0;
-	double er,sum=0.0;
-	double *z;
+	float er,sum=0.0;
+	float *z;
 	printf("\n Enter the number of variables in condition [n] :");
 	scanf("%d",&n);
 	printf("\n Enter the number of equation in condition [m] :");
 	scanf("%d",&m);
-	z=(double *)malloc((n+m)*sizeof(double));
+	z=(float *)malloc((n+m)*sizeof(float));
 	printf("Enter the coefficient of fuction to be optimized\n");
 	for(i=0;i<n;i++)
 	{
 		printf("Value of coefficient of x%d :",i+1);
-		scanf("%lf",&z[i]);
+		scanf("%f",&z[i]);
 	}
 	
 	if (m==0)
@@ -197,14 +197,14 @@ void main(){
 		printf("No Solution");
 		exit(0);
 	}
-	double **a;
+	float **a;
 	
-	double *b;
+	float *b;
 	int data[m];
 	
-	a=(double ** )malloc(m*sizeof(double * ));
+	a=(float ** )malloc(m*sizeof(float * ));
 	for (j=0;j<m;j++)
-		a[j]=(double *)malloc((n+m+1)*sizeof(double));
+		a[j]=(float *)malloc((n+m+1)*sizeof(float));
 
 	printf("Enter Value of Matrix A:\n");
 	for (i=0;i<m;i++)
@@ -212,7 +212,7 @@ void main(){
 		for(j=0;j<n;j++)
 		{	
 			printf("Enter coefficient of variable x%d in equation %d :",j+1,i+1);
-			scanf("%lf",&a[i][j]);
+			scanf("%f",&a[i][j]);
 		}
 	}
 	for (i=n;i<(n+m);i++){
@@ -227,28 +227,28 @@ void main(){
 		}
 
 	}
-	b=(double *)malloc(m*sizeof(double));
+	b=(float *)malloc(m*sizeof(float));
 	printf("Enter Value of Matrix b:\n");
 	for (i=0;i<m;i++)
 	{
 		printf("Enter the value b %d :",i+1);
-		scanf("%lf",&b[i]);
+		scanf("%f",&b[i]);
 
 	}
 	int total_solution=fact(n+m)/(fact(m)*fact(n));
 	//Solution main containing all feasible solution
-	double **solution_main;
-	solution_main=(double ** )malloc(total_solution*sizeof(double * ));
+	float **solution_main;
+	solution_main=(float ** )malloc(total_solution*sizeof(float * ));
 	for (j=0;j<total_solution;j++)
-		solution_main[j]=(double *)malloc((n+m)*sizeof(double));
+		solution_main[j]=(float *)malloc((n+m)*sizeof(float));
 	//extreme points are basic feasible solution
-	double **extremepoints;
-	extremepoints=(double ** )malloc(total_solution*sizeof(double * ));
+	float **extremepoints;
+	extremepoints=(float ** )malloc(total_solution*sizeof(float * ));
 	for (j=0;j<total_solution;j++)
-		extremepoints[j]=(double *)malloc((n+m)*sizeof(double));
+		extremepoints[j]=(float *)malloc((n+m)*sizeof(float));
 	//extremeValue will contain values at extreme points
-	double *extremeValue;
-	extremeValue=(double *)malloc(total_solution*sizeof(double));
+	float *extremeValue;
+	extremeValue=(float *)malloc(total_solution*sizeof(float));
 
 	generateCombination(data,a,0,0,m,n+m,b,solution_main);
 	printf("Feasible Solution Are as Follows:\n");
@@ -289,7 +289,7 @@ void main(){
 						for(i=0;i<k;i++){
 							for (j=0;j<n+m;j++)
 							{
-								printf("Value of x %d is : %lf\n",j+1,extremepoints[i][j]);
+								printf("Value of x %d is : %f\n",j+1,extremepoints[i][j]);
 			 				}
 			 				printf("---------------------------\n");
 							}
@@ -304,11 +304,11 @@ void main(){
 							}
 
 			int maxindex=max(extremeValue,k);
-			printf("Maximum value of Objective Function is is %lf",extremeValue[maxindex]);
+			printf("Maximum value of Objective Function is is %f",extremeValue[maxindex]);
 			printf("\n\n Solution is obtained at :\n");
 			for (j=0;j<n+m;j++)
 							{
-								printf("\nValue of x %d is : %lf",j+1,extremepoints[maxindex][j]);
+								printf("\nValue of x %d is : %f",j+1,extremepoints[maxindex][j]);
 			 				}
 			printf("\n");
 }

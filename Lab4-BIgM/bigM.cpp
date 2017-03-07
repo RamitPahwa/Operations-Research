@@ -24,6 +24,8 @@ int counter=0;
 int n,m,i,j,k;
 int table_no=1;
 
+
+
 void input()
 {
 
@@ -37,7 +39,7 @@ void input()
   //needs to be updated 
   for (i=0;i<m;i++)
     {
-      solution_index[i]=m+i+1;
+      solution_index[i]=m+i+1+surpVar;
     }
 
   printf("Enter 1 for Maximization problem and -1 for for Minimization problem\n");
@@ -58,6 +60,8 @@ void input()
       }
     else if (inequality.at(0)=='>')
     {
+      surpVar++;
+      artiVar++;
       for (j=0;j<n;j++)
         {
           scanf("%f",&mat[i][j]);
@@ -76,6 +80,7 @@ void input()
     }
     else 
     {
+      artiVar++;
       for (j=0;j<n;j++)
           {
             scanf("%f",&mat[i][j]);
@@ -149,6 +154,11 @@ int getMinRowIndex(int pivotColumn)
     }
     return index;
 }
+void replaceSolution(int pivotCol,int pivotRow)
+{
+  solution_index[pivotRow]=pivotCol+1;
+
+}
 void makeNewTableau(){
 
   cout << "======================================================" <<endl;
@@ -184,7 +194,7 @@ void solver()
       unbounded=true;
       return;
     }
-    // replaceSolution(pivotalColumn,pivotalRow);
+    replaceSolution(pivotCol,pivotRow);
     for(int i = 0 ; i <= m ; i++){
                for(int j = 0 ; j <= n+counter; j++){
                     if(i == pivotRow && j == pivotCol)
@@ -209,17 +219,32 @@ int main()
 
   input();
   solver();
-  for(i=0;i<=m;i++)
-  {
-    for(j=0;j<=n+counter;j++)
-    {
-      cout<<"   "<<mat[i][j];
-    }
-    cout<<endl;
-  }
-  
 
+  cout <<"======================================================" <<endl;
+    if(infinite)
+        printf("There are infinitely many solutions\n");          
+    else if(unbounded)
+        printf("The problem is unbounded\n");
+    else if (max_or_min==1)         
+        {
+          printf("The Maximum value of Z is %f \n", mat[m][n+counter]);
+          for (i=0;i<m;i++)
+          {
+            std::cout<<"Value of x"<<solution_index[i]<<" is:  "<<mat[i][n+counter]<<endl;
+            std::cout<<"Rest variable's value =0"<<endl;
+          }
+        }
+    else if(max_or_min==-1)
+         {
+          printf("The Minimum value of Z is %f \n", -mat[m][n+counter]);
+          for (i=0;i<m;i++)
+          {
+            std::cout<<"Value of x"<<solution_index[i]<<" is:  "<<mat[i][n+counter]<<endl;
+            std::cout<<"Rest variable's value =0"<<endl;
+          }
+        }
 
-
+    cout <<"======================================================" <<endl; 
+    return 0;
 
 }
