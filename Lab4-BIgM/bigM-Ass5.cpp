@@ -7,18 +7,20 @@
 
 using namespace std;
 
-#define M 10000
+#define M 1000000
 #define size 15
 
 // Variables involved in the Problem 
 
 float mat[size][size],temp[size][size],BFS[2*size][2*size];
+float mat_ori[size][size],temp_ori[size][size];
 float b_global[size];
 float objectiveCoef[size]={0};
 int rc[size]={0};            //Right coefficient matrix used to indicate artificial variable 
 int slackVar=0,artiVar=0,surpVar=0;
 int max_or_min;
 int solution_index[size];
+int non_basic[size];
 bool infinite=false;
 bool unbounded=false;
 int counter=0,Bcounter=0;
@@ -53,6 +55,7 @@ void input()
         {
           scanf("%f",&mat[i][j]);
           BFS[i][j]=mat[i][j];
+          mat_ori[i][j]=mat[i][j];
         }
         for (k=0;k<m;k++)
         {
@@ -74,18 +77,21 @@ void input()
         {
           scanf("%f",&mat[i][j]);
           BFS[i][j]=mat[i][j];
+          mat_ori[i][j]=mat[i][j];
         }
       for (k=0;k<m;k++)
         {
           if(k!=i)
             {
               mat[k][j+counter]=0;
+              mat_ori[k][j+counter]=0;
               BFS[k][j+Bcounter]=0;
               BFS[k][j+Bcounter+1]=0;
             }
           else
               {
                 mat[k][j+counter]=-1;
+                mat_ori[k][j+counter]=-1;
                 BFS[k][j+Bcounter]=1;
                 BFS[k][j+Bcounter+1]=-1;
               }
@@ -102,6 +108,7 @@ void input()
           {
             scanf("%f",&mat[i][j]);
             BFS[i][j]=mat[i][j];
+            mat_ori[i][j]=mat[i][j];
 
           }
             for (k=0;k<m;k++)
@@ -122,6 +129,10 @@ void input()
     {
       solution_index[i]=m+i+1+surpVar;
     }
+  for(i=0;i<n+counter;i++)
+  {
+    non_basic[i]=i+1;
+  }
   cout<<"Enter the Constant term for the equations"<<endl;  
   for(i=0;i<m;i++)
     { 
@@ -189,7 +200,10 @@ int getMinRowIndex(int pivotColumn)
 }
 void replaceSolution(int pivotCol,int pivotRow)
 {
-  solution_index[pivotRow]=pivotCol+1;
+  int temp;
+  temp=non_basic[pivotCol];
+  non_basic[pivotCol]=solution_index[pivotRow];
+  solution_index[pivotRow]=temp;
 
 }
 void makeNewTableau(){
@@ -415,13 +429,50 @@ int max(float *extremeValue,int Msize)
   }
   return max_index+1;
 }
+void solver(int niter)
+{
+
+  int pivotCol,pivotRow;
+  int tNO=1;
+  for(i=0;i<=m;i++)
+  {
+    for(j=0;j<=n+counter;j++)
+    {
+      printf("%f ",mat_ori[i][j]);
+    }
+  }
+  while((pivotCol=getMinFromLastRow())!=-1 && tNO<=niter)
+  {
+    if((pivotRow=getMinRowIndex(pivotCol))==-1)
+    {
+      unbounded=true;
+      return;
+    }
+    for(int i = 0 ; i <= m ; i++){
+               for(int j = 0 ; j <= n+counter; j++){
+                    if(i == pivotRow && j == pivotCol)
+                         temp[i][j] = 1/mat[i][j];
+                    else if(i == pivotRow)     
+                         temp[i][j] = (mat[i][j])/mat[pivotRow][pivotCol];          
+                    else if(j == pivotCol)
+                         temp[i][j] = ((-1)*mat[i][j])/mat[pivotRow][pivotCol];
+                    else{
+                        temp[i][j] = ((mat[pivotRow][pivotCol]*mat[i][j]) - (mat[pivotRow][j]*mat[i][pivotCol]))/mat[pivotRow][pivotCol]; 
+                    }
+               }
+          }
+          tNO++;
+  }
+  replaceSolution(pivotCol,pivotRow);
+
+}
 
 
 int main()
 {
 
   input();
-  solver();
+  //solver();
   float **a;
   float *b;
   int data[m];
@@ -452,15 +503,18 @@ int main()
   int flag;
   int endflag=0;
   int mainCounter=0;
+  int niter;
   while(ans==1)
-  { 
+  {   
     printf("\n\n                                Menu          \n\n");
     printf("===============================================================================\n");
     printf("1.Basic Feasible  Solution\n");
-    printf("2.\n");
-    printf("3.Non-Degenerate Basic Solution\n");
-    printf("4.Extreme Points\n");
-    printf("5.Exit\n");
+    printf("2.Number of Iteration to solve the Problem (considering intial as 0)\n");
+    printf("3.Non Basic variables\n");
+    printf("4.Basic Variables \n");
+    printf("5.ith Simplex Table\n");
+    printf("6.Optimal solution\n");
+    printf("7.Exit\n");
     printf("Enter your choice:");
     scanf("%d",&choice);
     switch(choice)
@@ -470,7 +524,7 @@ int main()
           {
             for(j=0;j<n;j++)
             {
-              if(solution_main[i][j]<0.0)
+              if(solution_main[i][j]<0.0 && solution_main[i][j]>M)
               {
                 flag=0;
                 break;
@@ -493,6 +547,19 @@ int main()
 
           }
           break;
+          case 2: solver();
+                  printf("Number of Iteration:%d\n",table_no);
+                  break;
+          case 3: 
+                  printf("Enter the iteration\n");
+                  scanf("%d",&niter);
+                  solver(niter);
+                  for(i=0;i<n+counter;i++)
+                  {
+
+                    printf("Value of Non-Basic x%d\n",non_basic[i]);
+                  }
+                break;
           case 5:exit(0);break;
         }
    }

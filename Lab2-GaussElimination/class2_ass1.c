@@ -219,7 +219,7 @@ void main(){
 	int choice;
 	int flag;
 	int endflag=0;
-	int counter=0;
+	int mainCounter=0;
 	while(ans==1)
 	{	
 		printf("\n\n                                Menu          \n\n");
@@ -262,7 +262,7 @@ void main(){
 					}
 					break;
 			case 2:for(i=0;i<total_solution;i++)
-					{	counter=0;
+					{	mainCounter=0;
 						for(j=0;j<n;j++)
 						{
 							if(solution_main[i][j]<0.0)
@@ -271,13 +271,13 @@ void main(){
 								break;
 							}
 							else if(solution_main[i][j]==0.0)
-								{counter++; 
+								{mainCounter++; 
 								flag=1;}
 							else
 								flag=1;
 						}
 
-						if(flag!=0&& counter>(n-m))
+						if(flag!=0&& mainCounter>(n-m))
 						{	endflag=1;
 							printf("Degenerate Basic Feasible Solution is :\n");
 							for (j=0;j<n;j++)
@@ -293,7 +293,7 @@ void main(){
 					break;
 			case 3:	
 					for(i=0;i<total_solution;i++)
-					{	counter=0;
+					{	mainCounter=0;
 						for(j=0;j<n;j++)
 						{	
 							if(solution_main[i][j]<0.0)
@@ -302,13 +302,13 @@ void main(){
 								break;
 							}
 							else if(solution_main[i][j]==0.0)
-								{counter++; 
+								{mainCounter++; 
 								flag=1;}
 							else
 								flag=1;
 						}
 
-						if(flag!=0&& counter==(n-m))
+						if(flag!=0&& mainCounter==(n-m))
 						{	endflag=1;
 							printf("Non Degenerate Basic Feasible Solution is :\n");
 							for (j=0;j<n;j++)
