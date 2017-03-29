@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-int count=0;
+int Bcount=0;
 void swap(float **a,int row1,int row2,int n)
 {
 
@@ -142,9 +142,9 @@ void generateCombination(int data[],float **a,int start,int index,int m,int n,fl
 				}
 			 for (j=0;j<n;j++)
 			 {
-			 	solution_main[count][j]=solution_final[j];
+			 	solution_main[Bcount][j]=solution_final[j];
 			 }
-			 count++;
+			 Bcount++;
 			return;
 
 		}
